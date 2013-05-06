@@ -1,9 +1,6 @@
-
-
-
 import matplotlib.mlab as mlab
 from math import *
-import pylab as p
+import pylab 
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -15,23 +12,23 @@ x = datax[:]
 y = datay[:]
 z = dataz[:]
 
-count, bins, ignored =plt.hist(x, 40, normed=True)
-plt.show()
-count, bins, ignored =plt.hist(y, 40, normed=True)
-plt.show()
-count, bins, ignored =plt.hist(z, 40, normed=True)
-plt.show()
+H1, x1edges, y1edges = np.histogram2d(x, y, bins=25, range=None, normed=False, weights=None)
+H2, x2edges, y2edges = np.histogram2d(y, z, bins=25, range=None, normed=False, weights=None)
+H3, x3edges, y3edges = np.histogram2d(z, x, bins=25, range=None, normed=False, weights=None)
+
+extent1 = [y1edges[0], y1edges[-1], x1edges[-1], x1edges[0]]
+extent2 = [y2edges[0], y2edges[-1], x2edges[-1], x2edges[0]]
+extent3 = [y3edges[0], y3edges[-1], x3edges[-1], x3edges[0]]
 
 
-H, xedges, yedges = np.histogram2d(x, y, bins=(1000,1000), normed =True)
-H.shape, xedges.shape, yedges.shape
-
-#extent = [yedges[0], yedges[-1], xedges[-1], xedges[0]]
-
-plt.imshow(H)
-
+plt.imshow(H1, extent=extent1, interpolation='nearest')
 plt.colorbar()
-plt.xlabel("x")
-plt.ylabel("y")
-plt.show()
+plt.savefig('x_y.png')
 
+plt.imshow(H2, extent=extent2, interpolation='nearest')
+plt.colorbar()
+plt.savefig('y_z.png')
+
+plt.imshow(H3, extent=extent3, interpolation='nearest')
+plt.colorbar()
+plt.savefig('z_x.png')
