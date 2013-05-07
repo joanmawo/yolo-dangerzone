@@ -14,12 +14,12 @@ x2_obs = obs_data[:,3]
 y2_obs = obs_data[:,4]
 z2_obs = obs_data[:,5]
 
-n_iterations = 20000
-limite_x = 125
+n_iterations = 40000
+limite_x = 20
 tolerancia_x = 10
-limite_y = -125
+limite_y = -22
 tolerancia_y = 10
-limite_z = -3900
+limite_z = -3950
 tolerancia_z = 100
 
 
@@ -39,7 +39,7 @@ x3_walk = np.append(x3_walk,x3_0)
 
 def likelihood(x2_obs, y2_obs, x, y):
     chi_squared = sum(((x2_obs - x)**2 + (y2_obs - y)**2))
-    return chi_squared
+    return -chi_squared
 
 def my_model_x(x1_obs, z2_obs, xo, zo):
 	x = (z2_obs - zo)*(x1_obs - xo)/(-zo)
@@ -62,15 +62,15 @@ for i in range(n_iterations):
 	y_init  = my_model_x(y1_obs, z2_obs, x2_walk[i], x3_walk[i])
     	y_prime = my_model_x(y1_obs, z2_obs, x2_prime, x3_prime)
 
-    	alpha = likelihood(x2_obs, y2_obs, x_prime, y_prime)/likelihood(x2_obs, y2_obs, x_init, y_init)
+    	alpha = likelihood(x2_obs, y2_obs, x_prime, y_prime) -likelihood(x2_obs, y2_obs, x_init, y_init)
 	
-    	if(alpha <= 1.0):
+    	if(alpha > 0.0):
         	x1_walk = np.append(x1_walk, x1_prime)
 		x2_walk = np.append(x2_walk, x2_prime)
 		x3_walk = np.append(x3_walk, x3_prime)
    	else:
        		beta = np.random.random()
-        	if(beta >= alpha):
+        	if(beta < np.exp(alpha)):
             		x1_walk = np.append(x1_walk,x1_prime)
 			x2_walk = np.append(x2_walk,x2_prime)
 			x3_walk = np.append(x3_walk,x3_prime)
