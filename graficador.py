@@ -4,6 +4,7 @@ import pylab
 import matplotlib.pyplot as plt
 import numpy as np
 
+#Programa que produce 3 histogramas bidimensionales a partir de los datos en tres archivos. Los histogramas representan la posicion de la fuente de emision de particulas
 datax = np.loadtxt(open("x.txt", 'r'))
 datay = np.loadtxt(open("y.txt", 'r'))
 dataz = np.loadtxt(open("z.txt", 'r'))
